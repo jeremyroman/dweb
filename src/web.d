@@ -14,35 +14,46 @@ void html_push(string s) { html(s); indent ~= "    "; }
 
 void write_link(string root, string file, bool expand) {
   bool isdir = dirExists(file);
-  html_push("<li>");
-  html("<a href=\"" ~ construct_rel_link(root, file) ~ "\"" ~
-        (expand? " class=\"thisPage\">&raquo; <i>" : ">&rsaquo; ")
-        ~ last_in_path(file) ~ (isdir ? "/" : "")
-        ~ (expand? "</i>" : "") ~ "</a>");
+  string flair = nav_tree_chev? (expand? "&raquo; " : "&rsaquo; ") : "";
+  html_push("<li" ~ (expand? " class=\"thisPage\" " : "") ~ ">");
+  html("<a href=\"" ~ construct_rel_link(root, file) ~ "\">"
+        ~ flair ~last_in_path(file) ~ (isdir ? "/" : "")
+        ~ "</a>");
   html_pop("</li>");
 }
 
 void nav_tree_r(string root, string cur_loc, string[] subdirs) {
+  string[] dirs = dir(cur_loc);
+  if (dirs.length == 0) return;
   html_push("<ul>");
-  foreach(string s; dir(cur_loc)) {
-    if (s[max(0,$-8)..$]=="index.md") continue;
+  bool next = false;
+  string next_loc;
+  foreach(string s; dirs) {
     bool hidden = last_in_path(s).length > 0 && last_in_path(s)[0] == '.';
     bool expand = s[cur_loc.length..$] == (subdirs.length == 0 ? "" : subdirs[0]);
     if (hidden && !expand) continue;
     write_link(root, s, expand);
     if (expand && isDir(cur_loc ~ subdirs[0])) {
-      html_push("<li>");
-      nav_tree_r(root, cur_loc ~ subdirs[0] ~ "/", subdirs[1..$]);
-      html_pop("</li>");
+      if (nav_tree_vert) {
+        html_push("<li>");
+        nav_tree_r(root, cur_loc ~ subdirs[0] ~ "/", subdirs[1..$]);
+        html_pop("</li>");
+      } else {
+        next = true;
+        next_loc = cur_loc ~ subdirs[0] ~ "/";
+      }
     }
   }
   html_pop("</ul>");
+  if (next) nav_tree_r(root, next_loc, subdirs[1..$]);
 }
 
 // this could be better
 string[] dir(string path) {
   string[] files;
-  foreach(string s; dirEntries(path, SpanMode.shallow)) files ~= s;
+  foreach(string s; dirEntries(path, SpanMode.shallow)) {
+    if (s[max(0,$-8)..$] != "index.md") files ~= s;
+  }
   sort(files);
   return files;
 }
@@ -51,11 +62,12 @@ void do_nav_tree(string path) {
   try { if (isDir(path) && path[path.length - 1] != '/') { path = site_root; } }
   catch (Exception e) { path = site_root; }
 
-  html_push("<div id=\"side-bar\">");
+  html_push("<div id=\"" ~ (nav_tree_vert ? "" : "horiz-") ~ "side-bar\">");
 
   string root = get_root_dir(path);
   string[] subdirs = explode_slashes(path[site_root.length..$]);
   nav_tree_r(root, site_root, subdirs);
+
   html_pop("</div>\n");
 }
 
@@ -124,7 +136,7 @@ bool fileExists(string path) { try { if (isFile(path)) return true; else return 
 bool dirExists(string path)  { try { if (isDir(path))  return true; else return false; } catch (Exception e) { return false; } }
 
 void do_content(string path) {
-  html_push("<div id=\"main-copy\">");
+  html_push("<div id=\"main-copy\"" ~ (nav_tree_vert? " class=\"main-copy-side-bar\"" : "")  ~ ">");
   string url = path[site_root.length..$];
   switch (url) {
     case "changelog":

@@ -1,5 +1,3 @@
-/* Default werc style */
-
 /* General style guidelines:
     - All font-size at least 14px (recommended 16px)
     - Line-height: 1.5 for paragraph body, 1.1 for header
@@ -13,7 +11,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 
 /* # Header # */
 .superHeader {
@@ -88,6 +85,55 @@ a:hover { text-decoration: underline; }
   background-color: transparent;
 }
 
+/* # Horiz-side # */
+#horiz-side-bar {
+  width:100%;
+  float left;
+  clear: both;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#horiz-side-bar ul {
+  margin: 0;
+  padding: 0.3em;
+  list-style-type: none;
+  list-style-image: none;
+  background: #eeeeee;
+  border: 0;
+}
+
+#horiz-side-bar ul:nth-child(even) { 
+  background-color: #dddddd;
+}
+
+#horiz-side-bar li {
+  display: inline;
+  white-space: nowrap;
+  line-height: 1.6em;
+}
+
+#horiz-side-bar li.thisPage a {
+  color: black!important;
+  font-weight: bold;
+}
+#horiz-side-bar ul li a {
+  margin: 0;
+  padding: 0.1em 1ex 0.1em 1ex;
+  color: #336699;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 1em;
+  border: 0;
+}
+
+#horiz-side-bar ul li a:hover {
+  color: black;
+  text-decoration: none;
+  text-transform: none;
+}
+
 
 /* # Side # */
 #side-bar {
@@ -120,7 +166,6 @@ li ul {
 
 #side-bar li {
   margin: 0;
-  padding: 0.1ex 0;  /* Circumvents a rendering bug (?) in MSIE 6.0  XXX should move to iehacks.css, this causes an ugly gap */
 }
 
 #side-bar a {
@@ -135,10 +180,10 @@ li ul {
   border-left: white solid 0.2em;
 }
 
-.thisPage, .thisPage a {
+#side-bar li.thisPage a {
   color: black!important;
   background-color: white;
-  padding-left: 5mm;
+  font-style:italic;
 }
 
 #side-bar a:hover {
@@ -170,11 +215,15 @@ li ul {
 
 /* # Main Copy # */
 #main-copy {
-  max-width: 70em;
+  padding: 0.5mm 5mm 5mm 5mm;
   color: black;
   background-color: transparent;
   text-align: justify;
   line-height: 1.5em;
+}
+
+.main-copy-side-bar {
+  max-width: 70em;
   margin: 0em 0 0 16em;
   padding: 0.5mm 5mm 5mm 5mm;
   border-left: 1px solid #ddd;
