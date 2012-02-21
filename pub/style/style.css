@@ -12,6 +12,13 @@ body {
   padding: 0;
 }
 
+#container {
+  position: relative;
+  margin: 20px auto;
+  width: 900px;
+  text-align: left;
+}
+
 /* # Header # */
 .superHeader {
   color: white;
@@ -220,6 +227,7 @@ li ul {
   background-color: transparent;
   text-align: justify;
   line-height: 1.5em;
+  word-wrap: break-word;
 }
 
 .main-copy-side-bar {

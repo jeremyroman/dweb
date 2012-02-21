@@ -187,11 +187,13 @@ void main(string[] args) {
   html("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
   html_pop("</head>\n");
   
-  html_push("<body>");
+  html_push("<body" ~ (page_container? " style=\"text-align: center\"" : "")~ ">");
+  if (page_container) html_push("<div id=\"container\">");
   do_header();
   do_nav_tree(path);
   do_content(path);
   do_footer();
+  if (page_container) html_push("</div>");
   html_pop("</body>\n");
 
   html_pop("</html>");
