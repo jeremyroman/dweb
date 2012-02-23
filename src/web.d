@@ -1,5 +1,5 @@
 //#!/usr/bin/rdmd
-import std.stdio, std.path, std.process, std.file, std.array, std.string, std.algorithm, std.datetime;
+import std.stdio, std.path, std.process, std.file, std.array, std.string, std.algorithm, std.datetime, std.ascii;
 import config;
 
 string dweb_root;
@@ -65,9 +65,14 @@ void do_header() {
   html_push("<div id=\"header\">");
   
   html_push("<div class=\"superHeader\">");
+  
+  html_push("<div class=\"left\">");
+  html_pop("</div>"); 
+  
   html_push("<div class=\"right\">");
   html("<a href=\"" ~ url_root ~ "changelog\">changelog</a>");
   html_pop("</div>");
+  
   html_pop("</div>");
 
   html_push("<div class=\"midHeader\">");
@@ -87,6 +92,15 @@ bool dirExists(string path)  { try { if (isDir(path))  return true; else return 
 
 void do_content(string url) {
   html_push("<div id=\"main-copy\"" ~ (nav_tree_vert? " class=\"main-copy-side-bar\"" : "")  ~ ">");
+  // first, see if we have something that wants to handle url outright
+  foreach (string glob, string h; handlers) {
+    if (globMatch(url, glob)) {
+      html(shell(dweb_root ~ "/bin/" ~ h ~ " " ~ url));
+      html_pop("</div>");
+      return;
+    }
+  }
+  // if that failed, see if we can handle the file
   if (url == "" ? false : url[$-1] == '/') url ~= "index";
   foreach (f; array(map!"a.name"(dirEntries(dirName(dweb_root ~ "/srv/" ~ url), SpanMode.shallow)))) {
     if (isDir(f)) continue;
@@ -119,6 +133,11 @@ void do_footer() {
   html_pop("</div>\n");
 }
 
+bool evil(string s) {
+  foreach(char c; s) if (!isAlphaNum(c) && c != '/' && c != '-' && c != '_') return true;
+  return false;
+}
+
 void main(string[] args) {
   init_handlers();
   dweb_root = getcwd()[0..$-4]; // take out bin/
@@ -128,6 +147,7 @@ void main(string[] args) {
   html_push("<html>\n");
 
   string url = getenv("SCRIPT_URL")[url_root.length..$];
+  if (evil(url)) { html ("bad url."); return; }
   
   string pagename = baseName(url);
   if (pagename.length != 0) pagename = " - " ~ pagename;
