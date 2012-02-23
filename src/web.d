@@ -101,7 +101,7 @@ void do_content(string url) {
     }
   }
   // if that failed, see if we can handle the file
-  if (url == "" ? false : url[$-1] == '/') url ~= "index";
+  if (url == "" ? true : url[$-1] == '/') url ~= "index";
   foreach (f; array(map!"a.name"(dirEntries(dirName(dweb_root ~ "/srv/" ~ url), SpanMode.shallow)))) {
     if (isDir(f)) continue;
     string name = baseName(f); name = name[0] == '@' ? name[1..$] : name;
@@ -146,7 +146,7 @@ void main(string[] args) {
   html("<!DOCTYPE html>");
   html_push("<html>\n");
 
-  string url = getenv("SCRIPT_URL")[url_root.length..$];
+  string url = getenv("REQUEST_URI")[url_root.length..$];
   if (evil(url)) { html ("bad url."); return; }
   
   string pagename = baseName(url);

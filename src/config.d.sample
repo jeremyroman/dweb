@@ -1,4 +1,4 @@
-const string url_root = "/~j3parker/";
+const string url_root = "/";
 
 const string site_title = "This is a Title";
 const string site_subtitle = "but this is a subtitle";
