@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteBase /~j3parker/
 RewriteRule ^pub/(.*) - [L]
-RewriteRule ^(.*) /users/j3parker/www/bin/web [L]
+RewriteRule ^(.*) bin/web [L]
