@@ -1,6 +1,6 @@
 dweb - A simple website written in D
 =====
-dweb is a simple website framework inspired by the [werc][werc] software.
+dweb is a simple website framework based off the [werc][werc] software.
 
 Its principles are:
 
@@ -20,16 +20,16 @@ You will need:
 - An HTTP server with CGI support.
 - The D compiler.
 
-Extract the contents into the location you want to serve webpages from. Edit the following files:
+Extract the contents into the location you want to serve webpages from. Create <code>$DWEB\_ROOT/.htaccess</code> and <code>$DWEB\_ROOT/src/config.d</code> by copying the provided sample files. Then edit the following files:
 
-- `$DWEB_ROOT/.htaccess`: make the rewrite path work for your setup.
-- `$DWEB_ROOT/src/config.d`: change these things as desired. Custom handlers are added in init_handlers. The key is the glob to activate the handler, and the value is the `bin/` relative path of the handler.
-- `$DWEB_ROOT/src/web.d`: this is the core code.
-- `$DWEB_ROOT/pub/`: static content goes here.
-- `$DWEB_ROOT/srv/`: directories, markdown webpages etc. go in here.
-- `$DWEB_ROOT/bin/`: custom handlers go here.
+- <code>$DWEB_ROOT/.htaccess</code>: make the paths work for your setup.
+- <code>$DWEB_ROOT/src/config.d</code>: change these strings as necessary.
+- <code>$DWEB_ROOT/src/web.d</code>: this is the main web code.
+- <code>$DWEB_ROOT/pub/</code>: static content goes here.
+- <code>$DWEB_ROOT/srv/</code>: directories, markdown webpages etc. go in here.
+- <code>$DWEB_ROOT/bin/</code>: custom handlers go here.
 
-Run `./build` in `$DWEB_ROOT/src` to recompile the website software.
+Run <code>build</code> in <code>$DWEB_ROOT/src</code> to recompile the website software.
 
 Source
 --------
