@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ pagename }}</title>
+    <link rel="stylesheet" href="{{ url_root }}pub/style/style.css" type="text/css" media="screen, handheld" title="default">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div id="header">
+      <div class="superHeader">
+        <div class="left">
+        </div>
+        <div class="right">
+          <a href="{{ url_root }}changelog">changelog</a>
+        </div>
+      </div>
+      <div class="midHeader">
+        <h1 class="headerTitle">
+          <a href="{{ url_root }}">{{ site_title }}</a>
+          <span id="headerSubTitle">{{ site_subtitle }}</a>
+        </h1>
+      </div>
+    </div>
+
+    <div id="horiz-side-bar">
+      {{ nav_tree }}
+    </div>
+
+    <div id="main-copy">
+      {{ content }}
+    </div>
+
+    <div id="footer">
+      <div class="left">
+        <a href="{{ url_root }}dweb">Powered by dweb</a>
+      </div>
+      <div class="right">&nbsp;</div>
+    </div>
+  </body>
+</html>
