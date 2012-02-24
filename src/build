@@ -1,1 +1,2 @@
+cd "$(dirname $0)"
 dmd config.d web.d -ofweb && rm web.o && mv web ../bin/
